@@ -1,0 +1,17 @@
+version: "3.4"
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URI:
+
+  mongo:
+    container_name: mongo
+    image: mongo:4
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:

@@ -18,5 +18,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint'],
-  rules: {},
+  rules: {
+    '@typescript-eslint/member-delimiter-style': 0,
+  },
 }

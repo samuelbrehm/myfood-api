@@ -1,0 +1,25 @@
+import { Schema, model } from 'mongoose'
+import { ProductDocument } from '../types/productTypes'
+
+const productSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  description: {
+    type: String,
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  unit: {
+    type: String,
+    enum: ['UN', 'LT', 'GR', 'Kg'],
+    required: true,
+  },
+})
+
+export default model<ProductDocument>('Product', productSchema)

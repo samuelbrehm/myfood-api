@@ -1,3 +1,35 @@
+directive @auth(role: UserRole = USER) on FIELD_DEFINITION
+
+# User
+enum UserRole {
+  USER
+  ADMIN
+}
+
+type User {
+  _id: ID!
+  name: String!
+  email: String!
+  role: UserRole!
+}
+
+input UserSignInInput {
+  email: String!
+  password: String!
+}
+
+input UserSignUpInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+# Product
 type Product {
   _id: ID!
   name: String!
@@ -28,11 +60,13 @@ enum Unit {
 }
 
 type Query {
-  products: [Product!]!
-  product(_id: ID!): Product!
+  products: [Product!]! @auth
+  product(_id: ID!): Product! @auth(role: ADMIN)
 }
 
 type Mutation {
+  signin(data: UserSignInInput!): AuthPayload!
+  signup(data: UserSignUpInput!): AuthPayload!
   createProduct(data: ProductCreateInput!): Product!
   updateProduct(data: ProductUpdateInput!, _id: ID!): Product!
   deleteProduct(_id: ID!): Product!

@@ -1,4 +1,5 @@
-import { Models } from '.'
+import { Schema } from 'mongoose'
+import { Models, UserRole } from '.'
 
 export interface CheckExistenceOptions {
   model: keyof Models
@@ -9,4 +10,9 @@ export interface CheckExistenceOptions {
   where?: Record<string, any>
   errorCode?: string
   extensions?: Record<string, any>
+}
+
+export interface TokenPayload {
+  sub: Schema.Types.ObjectId
+  role: UserRole
 }

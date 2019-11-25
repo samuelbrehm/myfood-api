@@ -1,5 +1,7 @@
-import { Models } from '.'
+import { ContextParameters } from 'graphql-yoga/dist/types'
+import { AuthUser, Models } from '.'
 
-export interface Context {
+export interface Context extends ContextParameters {
+  authUser: AuthUser
   db: Models
 }

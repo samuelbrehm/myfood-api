@@ -1,13 +1,17 @@
-import { Types } from 'mongoose'
-import { CheckExistenceOptions, TokenPayload } from './types'
+import { Types, Document, Model } from 'mongoose'
+import {
+  FinddocumentOptions,
+  TokenPayload,
+  OrderItemSubdocument,
+} from './types'
 import { CustomError } from './errors'
 import { SignOptions, sign } from 'jsonwebtoken'
 
 const isMongoId = (value: string): boolean => Types.ObjectId.isValid(value)
 
-const checkExistence = async (
-  opts: CheckExistenceOptions,
-): Promise<boolean> => {
+const findDocument = async <T extends Document>(
+  opts: FinddocumentOptions,
+): Promise<T> => {
   const {
     model,
     db,
@@ -26,9 +30,11 @@ const checkExistence = async (
     )
   }
 
-  const exists = await db[model].exists(where || { [field]: value })
+  const document = await ((db[model] as unknown) as Model<T>)
+    .findOne(where || { [field]: value })
+    .exec()
 
-  if (!exists) {
+  if (!document) {
     throw new CustomError(
       message || `${model} with ${field} '${value}' not found`,
       errorCode || 'NOT_FOUND_ERROR',
@@ -36,10 +42,35 @@ const checkExistence = async (
     )
   }
 
-  return exists
+  return document
 }
 
 const issueToken = (payload: TokenPayload, options?: SignOptions): string =>
   sign(payload, process.env.JWT_SECRET, { expiresIn: '2h', ...options })
 
-export { isMongoId, checkExistence, issueToken }
+const findOrderItem = (
+  items: Types.DocumentArray<OrderItemSubdocument>,
+  _id: string,
+  operation: 'update' | 'delete',
+): OrderItemSubdocument => {
+  if (!isMongoId(_id)) {
+    throw new CustomError(
+      `Invalid ID for '${_id}' in item to ${operation}!`,
+      'INVALID_ID_ERROR',
+    )
+  }
+
+  // const item = items.find(orderItem => orderItem._id.equals(_id))
+  const item = items.id(_id)
+
+  if (!item) {
+    throw new CustomError(
+      `Item with id '${_id}' not found to ${operation}!`,
+      'NOT_FOUND_ERROR',
+    )
+  }
+
+  return item
+}
+
+export { findDocument, findOrderItem, isMongoId, issueToken }

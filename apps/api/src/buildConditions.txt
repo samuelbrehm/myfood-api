@@ -1,0 +1,37 @@
+/*
+recebe neste formato de objeto
+{
+  priceGt: 6,
+  priceLt: 10,
+  OR: [
+    { nameEq: "Coca-Cola 2l" }
+  ]
+}
+
+keys
+['priceGt', 'priceLt', 'OR']
+
+BuildConditions monta assim
+{
+  price: { $gt: 6, $lt: 10 },
+  $or: [
+    {
+      name: { $eq: 'Coca-Cola 2l' },
+    }
+  ]
+}
+*/
+
+Testando o buildConditions
+
+// console.log(
+//   'Build Conditions: ',
+//   require('util').inspect(
+//     buildConditions({
+//       priceGt: 6,
+//       priceLt: 10,
+//       OR: [{ nameEq: 'Coca-Cola 2l' }],
+//     }),
+//     { depth: null },
+//   ),
+// )

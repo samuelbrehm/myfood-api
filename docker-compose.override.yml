@@ -17,3 +17,13 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ME_CONFIG_MONGODB_SERVER: "mongo"
+#   redis-commander:
+#     container_name: redis-commander
+#     image: rediscommander/redis-commander:latest
+#     build: .
+#     restart: always
+#     environment:
+#       - REDIS_HOST: ${REDIS_HOST}
+# ​      - REDIS_PORT: ${REDIS_PORT}
+#     ports:
+#       - "8081:8081"

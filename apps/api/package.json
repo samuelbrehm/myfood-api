@@ -32,6 +32,8 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dataloader": "^1.4.0",
+    "graphql-fields-list": "^2.1.2",
     "graphql-redis-subscriptions": "^2.1.1",
     "graphql-yoga": "^1.18.3",
     "ioredis": "^4.14.1",
